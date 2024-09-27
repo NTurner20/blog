@@ -6,6 +6,7 @@ const app = express();
 // Middleware
 
 // ROUTES //
+app.use("/auth", require("./routes/auth"));
 
 // Run app
 app.listen(process.env.PORT, () => {
