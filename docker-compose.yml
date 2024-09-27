@@ -4,12 +4,30 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.dev
+    env_file:
+      - ./server/.env  
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - "3000:3000"
+      - "4000:4000"
+    depends_on:
+      - db
     environment:
       NODE_ENV: development
     stdin_open: true
     tty: true
+  db:
+      image: postgres:13
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: Holo4life
+        POSTGRES_DB: blog
+      ports:
+        - "5433:5432"
+      volumes:
+        - db_data:/var/lib/postgresql/data
+        - ./server/db-init:/docker-entrypoint-initdb.d/  # Mount folder with init SQL script
+
+volumes:
+  db_data:

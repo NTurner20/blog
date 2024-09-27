@@ -1,4 +1,6 @@
-server/node_modules/
+# Ignore node_modules folders
+node_modules/
+*/node_modules/
 
 # Ignore macOS system files
 .DS_Store
