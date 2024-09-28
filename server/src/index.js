@@ -10,6 +10,7 @@ app.use(cors());
 
 // ROUTES //
 app.use("/auth", require("./routes/auth"));
+app.use('/dashboard', require('./routes/dashboard'));
 
 // Run app
 app.listen(process.env.PORT || 4000, () => {

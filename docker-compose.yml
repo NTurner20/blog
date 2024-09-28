@@ -8,7 +8,6 @@ services:
       - ./server/.env  
     volumes:
       - ./server:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
       - "4000:4000"
     depends_on:
