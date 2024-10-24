@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = ({setIsAuthenticated}) => {
   const [email, setEmail] = useState("");
@@ -33,6 +34,7 @@ const handleSubmit = (e) => {
         }
       })
       .catch((err) => {
+        toast.error(err.message);
         console.error(err.message);
       });
   };

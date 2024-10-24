@@ -2,21 +2,33 @@ const router = require('express').Router();
 const pool = require('../database');
 const authorization = require('../middleware/authorization');
 
-// Get posts
-router.get('/', async (req, res) => {
+// Get user
+router.get('/', authorization,async (req, res) => {
     try {
-        const { rows } = await pool.query('SELECT * FROM posts');
-        res.json(rows);
+        const { rows } = await pool.query('SELECT * FROM users WHERE user_id = $1', [req.user.user_id]);
+        res.json(rows[0]);
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
     }
 });
+
+// get posts
+router.get('/posts', authorization, async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT posts.*, users.user_name FROM posts LEFT JOIN users ON posts.user_id = users.user_id;');
+        res.json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 //  Create post
 router.post('/posts', authorization, async (req, res) => {
     try {
         const { title, content } = req.body;
-        const newPost = await pool.query('INSERT INTO posts (post_title, post_content, user_id) VALUES ($1, $2, $3) RETURNING *', [title, content, req.user.user_id]);
+        const newPost = await pool.query('INSERT INTO posts (post_title, post_content, user_id, create_date) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *', [title, content, req.user.user_id]);
         res.json(newPost.rows[0]);
     } catch (error) {
         console.error(error);

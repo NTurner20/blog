@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Register = () => {
+const Register = ({setIsAuthenticated}) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +24,7 @@ const Register = () => {
       .then((data) => {
         if (data && data.token) {
           localStorage.setItem("token", data.token);
+          setIsAuthenticated(true);
         } else {
           throw new Error("Invalid response from server");
         }
